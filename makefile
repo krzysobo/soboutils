@@ -5,7 +5,7 @@
 AR                     := /usr/bin/ar rcu
 CXX                    := /usr/bin/g++
 # can be set in the env. vars, ie. export CC='ccccc'
-CC                     := /usr/bin/gcc
+CC                     ?= /usr/bin/gcc
 CXXFLAGS               :=  -g -O0 -Wall -Werror
 CFLAGS                 :=  -g -O0 -Wall -Werror
 ASFLAGS                := 
