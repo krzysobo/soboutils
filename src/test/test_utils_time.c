@@ -32,7 +32,6 @@ int main (int argc, char **argv)
     char time_buff[30];
     char time_buff_test[30];
     const char *format = "%Y-%m-%d %H:%M:%S";
-    char *res;
     struct tm *tm;
 
     printf("\ntest_utils_time has started...\n");
@@ -46,7 +45,7 @@ int main (int argc, char **argv)
     tm = localtime(&now);
     
     printf("\nParsing the generated time string with strptime...\n");
-    res = strptime(time_buff, format, tm);
+    strptime(time_buff, format, tm);
 
     printf("\nRe-creating the original formatted time string...\n");
     strftime(time_buff_test, 30, format, tm);
