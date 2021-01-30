@@ -46,3 +46,7 @@ You may change those paths to conform with your system configuration.
 
 # Usage and Examples
 ```TODO```
+
+# Tested and tests passing on:
+```ArchLinux 5.10.7-arch1-1```
+```MacOS Catalina 10.15.6```
