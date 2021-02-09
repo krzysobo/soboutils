@@ -1,28 +1,30 @@
-// Copyright (c) 2020-2021 Krzysztof Sobolewski <krzysztof.sobolewski@gmail.com>
+/*  
+*  Copyright (c) 2020-2021 Krzysztof Sobolewski <krzysztof.sobolewski@gmail.com>
+*  Permission is hereby granted, free of charge, to any person obtaining a copy
+*  of this software and associated documentation files (the "Software"), to deal
+*  in the Software without restriction, including without limitation the rights
+*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+*  copies of the Software, and to permit persons to whom the Software is
+*  furnished to do so, subject to the following conditions:
 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+*  The above copyright notice and this permission notice shall be included in all
+*  copies or substantial portions of the Software.
 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+*  SOFTWARE.
+*/
 
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>  // for isspace
+#include <stdbool.h>
+#include <ctype.h>  /* for isspace */
 
 
 /**
@@ -72,16 +74,18 @@ char *ltrim(char *text, char *extra_chars)
 char *rtrim(char *text, char *extra_chars) 
 {
     char *text_out;
+    char *end_pos;
+    int new_string_size;
     if(!text || !strlen(text)) {
         return text;
     }
 
-    char *end_pos = text + strlen(text);
+    end_pos = text + strlen(text);
     while (is_trimmable(*end_pos, extra_chars)) {
         --end_pos;
     }
 
-    int new_string_size = end_pos - text + 1;
+    new_string_size = end_pos - text + 1;
     text_out = calloc(new_string_size + 1, 1);
     strncpy(text_out, text, new_string_size);
  
@@ -121,4 +125,88 @@ int strpos(char *haystack, char *needle)
     pos = ptr_found - haystack;
 
     return pos;
+}
+
+
+/**
+ * @brief  
+ * @note   
+ * @param  *items[]: 
+ * @param  nitems: 
+ * @param  is_quoted: 
+ * @param  **str_out: 
+ * @retval 
+ */
+unsigned long join_strings(char *items[], int nitems, bool is_quoted, 
+    char **str_out)
+{
+    int i, d_chars_item; 
+    unsigned long total_strlen_strs = 0;
+    char *quoted_strs_dump;
+
+    if ((items == NULL) || (nitems < 1)) {
+        return 0;
+    }
+
+    if(is_quoted)
+        d_chars_item = 3; /* for quotes and comma */
+    else
+        d_chars_item = 1; /* for comma only */
+
+    for (i = 0; i < nitems; i++) {
+        total_strlen_strs += strlen(items[i]) + d_chars_item;
+        /* for quotes and comma (I know it gives one extra place on the end
+         * but that's no problem) 
+         */
+    }
+    quoted_strs_dump = calloc(total_strlen_strs + 2, 1);
+
+    for (i = 0; i < nitems; i++) {
+        if(is_quoted) {
+            strcat(quoted_strs_dump, "\"");
+            strcat(quoted_strs_dump, items[i]);
+            strcat(quoted_strs_dump, "\"");
+        } else {
+            strcat(quoted_strs_dump, items[i]);
+        }
+
+        if (i < nitems - 1) {
+            strcat(quoted_strs_dump, ",");
+        }
+    }
+    quoted_strs_dump[total_strlen_strs] = 0;
+    printf("\nquoted strs dump %s len: %lu, total: %lu", quoted_strs_dump, 
+        strlen(quoted_strs_dump), total_strlen_strs);
+
+    *str_out = quoted_strs_dump;
+    return total_strlen_strs;
+}
+
+
+/**
+ * @brief  
+ * @note   
+ * @param  **str: 
+ * @param  *str_size: 
+ * @param  *part: 
+ * @retval 
+ */
+int add_to_string(char **str, size_t *str_size, char *part)
+{
+    char *str_tmp;
+    if (*str == NULL) {
+        return -1;
+    }
+
+    if (strlen(*str) + strlen(part) > *str_size ) {
+        *str_size += strlen(part);
+        str_tmp = realloc(*str, *str_size + 1);
+        if (str_tmp == NULL) {
+            return -1;
+        }
+        *str = str_tmp;
+    }
+    strcat(*str, part);
+
+    return 0;
 }

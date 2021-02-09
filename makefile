@@ -7,7 +7,7 @@ CXX                    := /usr/bin/g++
 # can be set in the env. vars, ie. export CC='ccccc'
 CC                     ?= /usr/bin/gcc
 CXXFLAGS               :=  -g -O0 -Wall -Werror
-CFLAGS                 :=  -g -O0 -Wall -Werror
+CFLAGS                 :=  -g -O0 -Wall -Werror -std=c89 -pedantic
 ASFLAGS                := 
 AS                     := /usr/bin/as
 # can be set in the env. vars, ie. export TARGET_PATH='xxxxx'
