@@ -8,16 +8,19 @@ CXX                    := /usr/bin/g++
 CC                     ?= /usr/bin/gcc
 CXXFLAGS               :=  -g -O0 -Wall -Werror
 CFLAGS                 :=  -g -O0 -Wall -Werror -std=c89 -pedantic
+CFLAGSGTK       	   :=  -g -O0 -Wall -std=c11
 ASFLAGS                := 
 AS                     := /usr/bin/as
 # can be set in the env. vars, ie. export TARGET_PATH='xxxxx'
-TARGET_PATH            ?= 'bin'
-SOBOUTILS_INCLUDE_PATH ?= '/usr/local/share/soboutils'
-SOBOUTILS_LIB_PATH     ?= '/usr/local/lib/soboutils'
+TARGET_PATH            ?= bin
+
+SOBOUTILS_INCLUDE_PATH ?= /usr/local/share/soboutils
+SOBOUTILS_LIB_PATH     ?= /usr/local/lib/soboutils
 .PHONY: clean
 
 all: libsoboutils_static
 alltest: libsoboutils_static test_utils_file test_utils_string test_utils_time
+
 
 utils_time: src/utils_time.c
 	$(CC) $(CFLAGS) -fpic -o $(TARGET_PATH)/utils_time.o \
@@ -41,6 +44,16 @@ utils_string: src/utils_string.c
 	-I include
 	
 	chmod 777 $(TARGET_PATH)/utils_string.o
+
+
+utils_gtk: src/utils_gtk.c
+	$(CC) $(CFLAGSGTK) `pkg-config --cflags gtk4` -fpic -o \
+	$(TARGET_PATH)/utils_gtk.o \
+	-c src/utils_gtk.c \
+	`pkg-config --libs gtk4` \
+	-I include
+	
+	chmod 777 $(TARGET_PATH)/utils_gtk.o
 
 
 libsoboutils_static: utils_time utils_file utils_string
@@ -79,6 +92,10 @@ install:
 	sudo mkdir -p $(SOBOUTILS_INCLUDE_PATH)
 	sudo cp -rf $(TARGET_PATH)/libsoboutils.a $(SOBOUTILS_LIB_PATH)/
 	sudo cp -rf include/soboutils/* $(SOBOUTILS_INCLUDE_PATH)/
+
+
+installgtk: utils_gtk install
+	sudo cp -rf $(TARGET_PATH)/utils_gtk.o $(SOBOUTILS_LIB_PATH)/
 
 
 clean:
