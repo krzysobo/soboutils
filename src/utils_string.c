@@ -210,3 +210,49 @@ int add_to_string(char **str, size_t *str_size, char *part)
 
     return 0;
 }
+
+
+/**
+ * @brief  
+ * @note   
+ * @param  *text: 
+ * @param  offset: 
+ * @param  limit: 
+ * @param  *part: 
+ * @param  part_size: 
+ * @retval 
+ */
+int substr(char *text, size_t offset, size_t limit, char *part, size_t part_size)
+{
+    size_t len_text;
+
+    if (text == NULL) {
+        return -1; /* non-initialized text */
+    }
+
+    if (part == NULL) {
+        return -1; /* non-initialized part */
+    }
+
+    len_text = strlen(text);
+    if (len_text < 1) {
+        return -2; /* empty text */
+    } 
+
+    if (offset >= len_text) {
+        return -3;  /* out of range */
+    }
+
+    if (part_size < limit) {
+        return -3; /* out of range */
+    }
+
+    if (offset + limit >= len_text) { /* offset + limit too long, trimming */
+        limit = len_text - offset;
+    }
+
+    memcpy(part, text + offset, limit);
+    part[part_size] = 0;
+
+    return 0;
+}

@@ -31,5 +31,6 @@ int strpos(char *haystack, char *needle);
 unsigned long join_strings(char *items[], int nitems, bool is_quoted, 
     char **str_out);
 int add_to_string(char **str, size_t *str_size, char *part);
+int substr(char *text, size_t offset, size_t limit, char *part, size_t part_size);
 
 #endif

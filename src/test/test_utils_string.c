@@ -62,6 +62,19 @@ int main (int argc, char **argv)
     char *test_string_6_added;
     size_t test_string_6_len;
 
+    char * test_string7 = "Alice has a cat";
+    char * test_string7_for_test_a = "Alice";
+    char * test_string7_for_test_b = "cat";
+    char * test_string7_a;
+    char * test_string7_b;
+
+    int test_res7_a;
+    int test_res7_b;
+
+    size_t test_part_size7_a = 10;
+    size_t test_part_size7_b = 100;
+    size_t test_string7_len;
+
 
     printf("\ntest_utils_string has started...\n");
     printf("\nChecking whether strpos of 'ice' in the string '%s' == 2...",
@@ -142,5 +155,63 @@ int main (int argc, char **argv)
     printf("\nSTRLEN of the resulting string: %lu \n\n", 
         strlen(test_string_6_added));
 
+
+    /* substr */
+    test_string7_a = calloc(test_part_size7_a + 1, 1);
+    test_string7_b = calloc(test_part_size7_b + 1, 1);
+    test_string7_len = strlen(test_string7);
+ 
+    test_res7_a =  substr(test_string7, 0, 5, test_string7_a, test_part_size7_a);
+    printf("\nchecking if first result (%d) == 0...", test_res7_a);
+    assert(test_res7_a == 0);
+    printf(" - OK!\n");
+    printf("\nchecking if first substr ('%s') is 'Alice'...", test_string7_a);
+    assert(strcmp(test_string7_a, test_string7_for_test_a) == 0);
+    printf(" - OK!\ndisplaying: '%s'\n", test_string7_a);
+    printf("\nchecking if first substr ('Alice') len == 5...");
+    assert(strlen(test_string7_a) == 5);
+    printf(" - OK!\n"); 
+
+
+    test_res7_b = substr(test_string7, 12, 3, test_string7_b, test_part_size7_b);
+    printf("\nchecking if second result (%d) == 0...", test_res7_b);
+    assert(test_res7_b == 0);
+    printf(" - OK!\n");
+    printf("\nchecking if second substr ('%s') is 'cat'...", test_string7_b);
+    assert(strcmp(test_string7_b, test_string7_for_test_b) == 0);
+    printf(" - OK!\n");
+    printf("\nchecking if second substr ('cat') len == 3...");
+    assert(strlen(test_string7_b) == 3);
+    printf(" - OK!\n");
+
+
+    /* second result - limit exceeding string bounds MUST be cut but it
+     * MUST NOT exceed the part size
+     */
+    test_res7_b = substr(test_string7, 12, 60, 
+        test_string7_b, test_part_size7_b);
+    printf("\nchecking if limit %lu exceeding the string size %lu BUT NOT "
+        "exceeding the 'part' container size %lu is automatically cut and "
+        "the result is correct -> second result (%d) == 0...", 
+        60L, test_string7_len, test_part_size7_b, test_res7_b);
+    assert(test_res7_b == 0);
+    printf(" - OK!\n");
+    printf("\nchecking if second substr ('%s') is 'cat'...", 
+        test_string7_b);
+    assert(strcmp(test_string7_b, test_string7_for_test_b) == 0);
+    printf(" - OK!\n");
+    printf("\nchecking if second substr ('cat') len == 3...");
+    assert(strlen(test_string7_b) == 3);
+    printf(" - OK!\n");
+
+
+    /* second result - limit exceeding part size MUST RETURN AN ERROR -3 */
+    test_res7_b = substr(test_string7, 12, 101, 
+        test_string7_b, test_part_size7_b);
+    printf("\nchecking if limit %lu exceeding the part size %lu "
+        "returns the error -3: %d",
+        101L, test_part_size7_b, test_res7_b);
+    assert(test_res7_b == -3);
+    printf(" - OK!\n\n");
 
 }
