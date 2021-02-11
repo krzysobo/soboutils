@@ -87,7 +87,8 @@ char *rtrim(char *text, char *extra_chars)
 
     new_string_size = end_pos - text + 1;
     text_out = calloc(new_string_size + 1, 1);
-    strncpy(text_out, text, new_string_size);
+    memcpy(text_out, text, new_string_size);
+    text_out[new_string_size] = 0;
  
     return text_out;
 }
