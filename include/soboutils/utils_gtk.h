@@ -16,6 +16,9 @@ int get_gtk_tv_text_by_name(gchar *name, GtkWindow *window, gchar **text_out);
 int set_gtk_tv_text(GtkTextView *tv, gchar *text);
 int set_gtk_tv_text_by_name(gchar *name, GtkWindow *window, gchar *text);
 
+int add_gtk_tv_text(GtkTextView *tv, gchar *text);
+int add_gtk_tv_text_by_name(gchar *name, GtkWindow *window, gchar *text);
+
 
 void set_widget_data_in_window(GtkWindow *window, GtkBuilder *builder,
     const gchar *key);

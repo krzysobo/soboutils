@@ -169,6 +169,49 @@ int set_gtk_tv_text_by_name(gchar *name, GtkWindow *window, gchar *text)
 
 
 /**
+ * @brief  
+ * @note   
+ * @param  *tv: 
+ * @param  *text: 
+ * @retval 
+ */
+int add_gtk_tv_text(GtkTextView *tv, gchar *text)
+{
+    GtkTextBuffer *buffer;
+    GtkTextIter start, end;
+
+    buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tv));
+    if (buffer == NULL)
+        return -1;
+    gtk_text_buffer_get_bounds(buffer, &start, &end);
+    gtk_text_buffer_insert(buffer, &end, text, strlen(text));
+
+    return 0;
+}
+
+
+/**
+ * @brief  
+ * @note   
+ * @param  *name: 
+ * @param  *window: 
+ * @param  *text: 
+ * @retval 
+ */
+int add_gtk_tv_text_by_name(gchar *name, GtkWindow *window, gchar *text)
+{
+    GtkTextView *tv = NULL;
+    if ((name == NULL) || (strlen(name) < 1))
+        return -1;
+    tv = GTK_TEXT_VIEW(get_widget_by_name(name, window));
+    if (tv == NULL)
+        return -1;
+
+    return add_gtk_tv_text(tv, text);
+}
+
+
+/**
  * @brief  calls g_object_set_data on 
  * @note   
  * @param  *window: 
