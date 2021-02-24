@@ -93,7 +93,7 @@ int set_gtk_entry_text_by_name(gchar *name, GtkWindow *window, gchar *text)
  * @param  **text_out: 
  * @retval 
  */
-int get_gtk_tv_text(GtkTextView *tv, gchar **text_out)
+int get_gtk_tv_text(GtkTextView *tv, char **text_out)
 {
     GtkTextBuffer *buffer = NULL;
     GtkTextIter start, end;
@@ -103,7 +103,7 @@ int get_gtk_tv_text(GtkTextView *tv, gchar **text_out)
         return -1;
     }
     gtk_text_buffer_get_bounds(buffer, &start, &end);
-    gtk_text_buffer_get_text(buffer, &start, &end, true);
+    *text_out = gtk_text_buffer_get_text(buffer, &start, &end, true);
 
     return 0;
 }
@@ -117,7 +117,7 @@ int get_gtk_tv_text(GtkTextView *tv, gchar **text_out)
  * @param  **text_out: 
  * @retval 
  */
-int get_gtk_tv_text_by_name(gchar *name, GtkWindow *window, gchar **text_out)
+int get_gtk_tv_text_by_name(gchar *name, GtkWindow *window, char **text_out)
 {
     GtkTextView *tv = NULL;
     if ((name == NULL) || (strlen(name) < 1))
