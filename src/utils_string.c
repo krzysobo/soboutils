@@ -132,6 +132,87 @@ int strpos(char *haystack, char *needle)
 /**
  * @brief  
  * @note   
+ * @param  *haystack: 
+ * @param  *needle: 
+ * @retval 
+ */
+int number_of_substrings(char *haystack, char *needle) 
+{
+    char *p = NULL;
+    int n_items = 0;
+    if ((haystack == NULL) || (strlen(haystack) < 1) ||
+            (needle == NULL) || (strlen(needle) < 1)) {
+        return -1;
+    }
+
+    p = haystack;
+    while((p = strstr(p, needle))) {
+        n_items++;
+        p++;            
+    }
+
+    return n_items;
+}
+
+int split_string(char *string_in, char *sep_in, char ***strings_out)
+{
+    char *sep = NULL;
+    char *p = NULL, *old_p = NULL;
+    int sep_size = 0;
+    int n_parts = 1, part_i = 0;
+    bool going = true;
+    unsigned long len_string_in = 0, len_part = 0;
+    char **all_parts;
+
+    if ((string_in == NULL) || (strlen(string_in) < 1))
+        return -1;
+
+    if ((sep_in != NULL) && (strlen(sep_in) >= 1)) {
+        sep = sep_in;
+    } else {
+        sep = calloc(1 + 1, 1);
+        strcpy(sep, ",");
+    }
+
+    sep_size = strlen(sep);
+    string_in = trim(string_in, "\n");
+    len_string_in = strlen(string_in);
+
+    n_parts = number_of_substrings(string_in, sep) + 1;
+    all_parts = calloc(n_parts + 1, sizeof(char *));
+
+    p = string_in;
+    old_p = p;
+    while (going) {
+        old_p = p;
+        p = strstr(p, sep);
+        if ((p == NULL) || (p > string_in + len_string_in - 1)) {
+            p = string_in + len_string_in;
+            len_part = p - old_p;
+            going = false;
+        } else {
+            len_part = p - old_p;
+            p++;
+        }
+        
+        all_parts[part_i] = calloc(len_part + 1, 1);
+        memcpy(all_parts[part_i], old_p, len_part);
+/*         printf("\n PART_NUM: %d, PART: '%s' strlen part: %lu \n\n", 
+            part_i + 1, all_parts[part_i], 
+            strlen(all_parts[part_i]));
+ */
+        all_parts[part_i][len_part] = 0;
+        part_i++;
+    };
+
+    *strings_out = all_parts;
+
+    return n_parts;
+}
+
+/**
+ * @brief  
+ * @note   
  * @param  *items[]: 
  * @param  nitems: 
  * @param  is_quoted: 

@@ -27,7 +27,13 @@ int is_trimmable(char x, char *extra_chars);
 char *ltrim(char *text, char *extra_chars);
 char *rtrim(char *text, char *extra_chars);
 char *trim(char *text, char *extra_chars);
+
+int number_of_substrings(char *haystack, char *needle);
+
 int strpos(char *haystack, char *needle);
+
+int split_string(char *string_in, char *sep_in, char ***strings_out);
+
 
 unsigned long join_strings(char *items[], int nitems, bool is_quoted,
     const char *sep_in, char **str_out);

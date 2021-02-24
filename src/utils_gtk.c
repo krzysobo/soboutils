@@ -212,6 +212,48 @@ int add_gtk_tv_text_by_name(gchar *name, GtkWindow *window, gchar *text)
 
 
 /**
+ * @brief  
+ * @note   
+ * @param  *name: 
+ * @retval 
+ */
+gboolean get_gtk_checkbtn_active_by_name(gchar *name, GtkWindow *window)
+{
+    GtkCheckButton *chb = NULL;
+    if ((name == NULL) || (strlen(name) < 1))
+        return false;
+    chb = GTK_CHECK_BUTTON(get_widget_by_name(name, window));
+    if (chb == NULL)
+        return false;
+
+    return gtk_check_button_get_active(chb);
+}
+
+
+/**
+ * @brief  
+ * @note   
+ * @param  *name: 
+ * @retval 
+ */
+int set_gtk_checkbtn_active_by_name(gchar *name, GtkWindow *window, 
+    gboolean active)
+{
+    GtkCheckButton *chb = NULL;
+    if ((name == NULL) || (strlen(name) < 1))
+        return -1;
+    
+    chb = GTK_CHECK_BUTTON(get_widget_by_name(name, window));
+    if (chb == NULL)
+        return -1;
+
+    gtk_check_button_set_active(chb, active);
+
+    return 0;
+}
+
+
+/**
  * @brief  calls g_object_set_data on 
  * @note   
  * @param  *window: 

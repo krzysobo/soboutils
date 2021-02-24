@@ -31,6 +31,7 @@
 
 int main (int argc, char **argv)
 {
+    int i = 0;
     char * test_string1 = "Alice has a cat"; 
     char * test_string2 = "/usr/local/bin/";
     char test_string2a[] = "usr/local/bin";
@@ -67,13 +68,27 @@ int main (int argc, char **argv)
     char * test_string7_for_test_b = "cat";
     char * test_string7_a;
     char * test_string7_b;
-
     int test_res7_a;
     int test_res7_b;
-
     size_t test_part_size7_a = 10;
     size_t test_part_size7_b = 100;
     size_t test_string7_len;
+
+    char *test_string_8 = "Alice\nBob\nJenna\nJack Blah Blah\nDonna Doe";
+    char **test_array_8_out;
+    int test_8_n_parts = 5;
+    int res_8;
+
+    char *test_string_9 = "\n\n\n\n\n\t\t\tAlice\nBob\nJenna\nJack Blah Blah\nDonna Doe\n\n\n\t\t\t\n\n";
+    char **test_array_9_out;
+    int test_9_n_parts = 5;
+    int res_9;
+    
+
+    char *test_string_10 = "Alice and Bob";
+    char **test_array_10_out;
+    int test_10_n_parts = 1;
+    int res_10;
 
 
     printf("\ntest_utils_string has started...\n");
@@ -214,5 +229,29 @@ int main (int argc, char **argv)
         101L, test_part_size7_b, test_res7_b);
     assert(test_res7_b == -3);
     printf(" - OK!\n\n");
+
+
+    res_8 = split_string(test_string_8, "\n", &test_array_8_out);
+    printf("\n\n RES8: %d", res_8);
+    printf("\n checking whether number of parts in test 8 == %d...", test_8_n_parts);
+    assert(res_8 == test_8_n_parts);
+    printf(" - OK!\n\n");
+    
+    res_9 = split_string(test_string_9, "\n", &test_array_9_out);
+    printf("\n\n RES9: %d", res_9);
+    printf("\n checking whether number of parts in test 9 == %d and trimming works...", test_9_n_parts);
+    assert(res_9 == test_9_n_parts);
+    printf(" - OK!\n\n");
+
+    for(i = 0; i < res_9; i++) {
+        printf("\nPART I: %d OF %d: %s\n\n", i + 1, res_9, test_array_9_out[i]);
+    }
+
+    res_10 = split_string(test_string_10, "\n", &test_array_10_out);
+    printf("\n\n RES10: %d", res_10); 
+    printf("\n checking whether number of parts in test 10 == %d and the function works where there are NO SEARCHED SEPARATORS as well (should return the full string)...", test_10_n_parts);
+    assert(res_10 == test_10_n_parts);
+    printf(" - OK!\n\n");
+
 
 }
