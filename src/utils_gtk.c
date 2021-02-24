@@ -15,9 +15,9 @@ int get_gtk_entry_text(GtkEntry *entry, char **text_out)
     const char *text;
     
     buffer = gtk_entry_get_buffer(entry);
-    if (buffer == NULL) {
+    if (buffer == NULL)
         return -1;
-    }
+
     text = gtk_entry_buffer_get_text(buffer);
     *text_out = (char *)text;
 
@@ -32,7 +32,8 @@ int get_gtk_entry_text(GtkEntry *entry, char **text_out)
  * @param  **text_out: 
  * @retval 
  */
-int get_gtk_entry_text_by_name(gchar *name, GtkWindow *window, char **text_out)
+int get_gtk_entry_text_by_name(gchar *name, GtkWindow *window,
+    char **text_out)
 {
     GtkEntry *entry = NULL;
     if ((name == NULL) || (strlen(name) < 1))
@@ -57,10 +58,8 @@ int set_gtk_entry_text(GtkEntry *entry, gchar *text)
     GtkEntryBuffer *buffer;
     
     buffer = gtk_entry_get_buffer(entry);
-    if (buffer == NULL) {
+    if (buffer == NULL)
         return -1;
-    }
-    
     gtk_entry_buffer_set_text(buffer, text, strlen(text));
 
     return 0;
@@ -85,6 +84,89 @@ int set_gtk_entry_text_by_name(gchar *name, GtkWindow *window, gchar *text)
 
     return set_gtk_entry_text(entry, text);
 }
+
+
+/**
+ * @brief  
+ * @note   
+ * @param  *tv: 
+ * @param  **text_out: 
+ * @retval 
+ */
+int get_gtk_tv_text(GtkTextView *tv, gchar **text_out)
+{
+    GtkTextBuffer *buffer = NULL;
+    GtkTextIter start, end;
+
+    buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tv));
+    if (buffer == NULL) {
+        return -1;
+    }
+    gtk_text_buffer_get_bounds(buffer, &start, &end);
+    gtk_text_buffer_get_text(buffer, &start, &end, true);
+
+    return 0;
+}
+
+
+/**
+ * @brief  
+ * @note   
+ * @param  *name: 
+ * @param  *window: 
+ * @param  **text_out: 
+ * @retval 
+ */
+int get_gtk_tv_text_by_name(gchar *name, GtkWindow *window, gchar **text_out)
+{
+    GtkTextView *tv = NULL;
+    if ((name == NULL) || (strlen(name) < 1))
+        return -1;
+    tv = GTK_TEXT_VIEW(get_widget_by_name(name, window));
+    if (tv == NULL)
+        return -1;
+
+    return get_gtk_tv_text(tv, text_out);
+}
+
+/**
+ * @brief  
+ * @note   
+ * @param  *tv: 
+ * @param  *text: 
+ * @retval 
+ */
+int set_gtk_tv_text(GtkTextView *tv, gchar *text)
+{
+    GtkTextBuffer *buffer;
+    buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tv));
+    if (buffer == NULL)
+        return -1;
+    gtk_text_buffer_set_text(buffer, text, strlen(text));
+
+    return 0;
+}
+
+
+/**
+ * @brief  
+ * @note   
+ * @param  *name: 
+ * @param  *window: 
+ * @param  *text: 
+ * @retval 
+ */
+int set_gtk_tv_text_by_name(gchar *name, GtkWindow *window, gchar *text)
+{
+    GtkTextView *tv = NULL;
+    if ((name == NULL) || (strlen(name) < 1))
+        return -1;
+    tv = GTK_TEXT_VIEW(get_widget_by_name(name, window));
+    if (tv == NULL)
+        return -1;
+    return set_gtk_tv_text(tv, text);
+}
+
 
 /**
  * @brief  calls g_object_set_data on 

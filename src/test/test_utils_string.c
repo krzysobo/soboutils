@@ -114,7 +114,8 @@ int main (int argc, char **argv)
     printf("\ntest_utils_string has finished...\n");
 
 
-    test_string_5_len = join_strings(test_string_5_array, 2, true, &test_string_5_joined);
+    test_string_5_len = join_strings(test_string_5_array, 2, true, NULL, 
+        &test_string_5_joined);
     printf("\nTesting join_strings() with quotes - checking if length > 0...");
     assert(test_string_5_len > 0);
     printf(" - OK!\n");
@@ -125,7 +126,7 @@ int main (int argc, char **argv)
     printf("\nthe joined string with quotes: %s\n", test_string_5_joined);
 
 
-    test_string_5_len_no_quotes = join_strings(test_string_5_array, 2, false, &test_string_5_joined_no_quotes);
+    test_string_5_len_no_quotes = join_strings(test_string_5_array, 2, false, NULL, &test_string_5_joined_no_quotes);
     printf("\nTesting join_strings() WITHOUT quotes - checking if length > 0...");
     assert(test_string_5_len_no_quotes > 0);
     printf(" - OK!\n");

@@ -135,24 +135,38 @@ int strpos(char *haystack, char *needle)
  * @param  *items[]: 
  * @param  nitems: 
  * @param  is_quoted: 
+ * @param  *sep_in: 
  * @param  **str_out: 
  * @retval 
  */
-unsigned long join_strings(char *items[], int nitems, bool is_quoted, 
-    char **str_out)
+unsigned long join_strings(char *items[], int nitems, bool is_quoted,
+    char *sep_in, char **str_out)
 {
     int i, d_chars_item; 
     unsigned long total_strlen_strs = 0;
+    int sep_size = 0;
+    char *sep;
     char *quoted_strs_dump;
 
     if ((items == NULL) || (nitems < 1)) {
         return 0;
     }
 
+    if ((sep_in != NULL) && (strlen(sep_in) >= 1)) {
+        sep = sep_in;
+    } else {
+        sep = calloc(1 + 1, 1);
+        strcpy(sep, ",");
+    }
+    /*     printf("\n SEP IN IS: '%s'...SEP OUT IS: '%s'... \n\n", 
+            sep_in, sep); */
+
+    sep_size = strlen(sep);
+
     if(is_quoted)
-        d_chars_item = 3; /* for quotes and comma */
+        d_chars_item = 2 + sep_size; /* for quotes and comma */
     else
-        d_chars_item = 1; /* for comma only */
+        d_chars_item = sep_size; /* for comma only */
 
     for (i = 0; i < nitems; i++) {
         total_strlen_strs += strlen(items[i]) + d_chars_item;
@@ -171,13 +185,13 @@ unsigned long join_strings(char *items[], int nitems, bool is_quoted,
             strcat(quoted_strs_dump, items[i]);
         }
 
-        if (i < nitems - 1) {
-            strcat(quoted_strs_dump, ",");
+        if ((nitems > 1) && (i < nitems - 1)) {
+            strcat(quoted_strs_dump, sep);
         }
     }
     quoted_strs_dump[total_strlen_strs] = 0;
-    printf("\nquoted strs dump %s len: %lu, total: %lu", quoted_strs_dump, 
-        strlen(quoted_strs_dump), total_strlen_strs);
+    /* printf("\nquoted strs dump %s len: %lu, total: %lu", quoted_strs_dump, 
+        strlen(quoted_strs_dump), total_strlen_strs); */
 
     *str_out = quoted_strs_dump;
     return total_strlen_strs;
@@ -222,7 +236,8 @@ int add_to_string(char **str, size_t *str_size, char *part)
  * @param  part_size: 
  * @retval 
  */
-int substr(char *text, size_t offset, size_t limit, char *part, size_t part_size)
+int substr(char *text, size_t offset, size_t limit, char *part, 
+    size_t part_size)
 {
     size_t len_text;
 
