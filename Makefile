@@ -50,7 +50,6 @@ utils_gtk: src/utils_gtk.c
 	$(CC) $(CFLAGSGTK) `pkg-config --cflags gtk4` -fpic -o \
 	$(TARGET_PATH)/utils_gtk.o \
 	-c src/utils_gtk.c \
-	`pkg-config --libs gtk4` \
 	-I include
 	
 	chmod 777 $(TARGET_PATH)/utils_gtk.o

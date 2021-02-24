@@ -198,7 +198,6 @@ int add_to_string(char **str, size_t *str_size, char *part)
     if (*str == NULL) {
         return -1;
     }
-
     if (strlen(*str) + strlen(part) > *str_size ) {
         *str_size += strlen(part);
         str_tmp = realloc(*str, *str_size + 1);
