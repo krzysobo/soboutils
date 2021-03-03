@@ -70,9 +70,9 @@ int main (int argc, char **argv)
     char * test_string7_b;
     int test_res7_a;
     int test_res7_b;
-    size_t test_part_size7_a = 10;
-    size_t test_part_size7_b = 100;
-    size_t test_string7_len;
+    unsigned long test_part_size7_a = 10;
+    unsigned long test_part_size7_b = 100;
+    unsigned long test_string7_len;
 
     char *test_string_8 = "Alice\nBob\nJenna\nJack Blah Blah\nDonna Doe";
     char **test_array_8_out;
@@ -209,7 +209,7 @@ int main (int argc, char **argv)
     printf("\nchecking if limit %lu exceeding the string size %lu BUT NOT "
         "exceeding the 'part' container size %lu is automatically cut and "
         "the result is correct -> second result (%d) == 0...", 
-        60L, (unsigned long)test_string7_len, test_part_size7_b, test_res7_b);
+        60L, test_string7_len, test_part_size7_b, test_res7_b);
     assert(test_res7_b == 0);
     printf(" - OK!\n");
     printf("\nchecking if second substr ('%s') is 'cat'...", 
