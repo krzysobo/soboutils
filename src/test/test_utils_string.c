@@ -160,7 +160,7 @@ int main (int argc, char **argv)
     assert(strcmp(test_string_6_added, test_string_6_a) == 0);
     printf(" - OK!\n");
     printf("\nSTRLEN of the resulting string: %lu ", 
-        strlen(test_string_6_added)); 
+        (unsigned long)strlen(test_string_6_added)); 
 
     add_to_string(&test_string_6_added, &test_string_6_len, test_string_6_b);
     printf("\nTesting add_to_string() - checking whether string == %s... ", 
@@ -169,7 +169,7 @@ int main (int argc, char **argv)
     printf(" - OK!\n");
 
     printf("\nSTRLEN of the resulting string: %lu \n\n", 
-        strlen(test_string_6_added));
+        (unsigned long)strlen(test_string_6_added));
 
 
     /* substr */
@@ -209,7 +209,7 @@ int main (int argc, char **argv)
     printf("\nchecking if limit %lu exceeding the string size %lu BUT NOT "
         "exceeding the 'part' container size %lu is automatically cut and "
         "the result is correct -> second result (%d) == 0...", 
-        60L, test_string7_len, test_part_size7_b, test_res7_b);
+        60L, (unsigned long)test_string7_len, test_part_size7_b, test_res7_b);
     assert(test_res7_b == 0);
     printf(" - OK!\n");
     printf("\nchecking if second substr ('%s') is 'cat'...", 
