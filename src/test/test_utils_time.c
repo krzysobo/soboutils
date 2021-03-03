@@ -59,4 +59,6 @@ int main (int argc, char **argv)
     printf(" - OK!\n\n");
 
     printf("\ntest_utils_time has finished...\n");
+    
+    return 0;
 }

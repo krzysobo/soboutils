@@ -253,5 +253,5 @@ int main (int argc, char **argv)
     assert(res_10 == test_10_n_parts);
     printf(" - OK!\n\n");
 
-
+    return 0;
 }
