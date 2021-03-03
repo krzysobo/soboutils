@@ -77,4 +77,6 @@ int main (int argc, char **argv)
 
 
     printf("\ntest_utils_file finished...\n");   
+
+    return 0;
 }
