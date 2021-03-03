@@ -58,8 +58,8 @@ int main (int argc, char **argv)
     printf(" - OK!\n");
 
 
-    printf("\nChecking whether the test file %s is %zu bytes long...", 
-        test_file_path, strlen(test_string));
+    printf("\nChecking whether the test file %s is %lu bytes long...", 
+        test_file_path, (unsigned long)strlen(test_string));
     assert(get_file_size(test_file_path) == strlen(test_string));
     printf(" - OK!\n");
 
