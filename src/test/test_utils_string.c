@@ -79,7 +79,7 @@ int main (int argc, char **argv)
     int test_8_n_parts = 5;
     int res_8;
 
-    char *test_string_9 = "\n\n\n\n\n\t\t\tAlice\nBob\nJenna\nJack Blah Blah\nDonna Doe\n\n\n\t\t\t\n\n";
+    char *test_string_9 = "\n\n\n\n\n\t\t\tAlice\r\nBob\r\nJenna\r\nJack Blah Blah\r\nDonna Doe\n\n\n\t\t\t\n\n";
     char **test_array_9_out;
     int test_9_n_parts = 5;
     int res_9;
@@ -237,14 +237,14 @@ int main (int argc, char **argv)
     assert(res_8 == test_8_n_parts);
     printf(" - OK!\n\n");
     
-    res_9 = split_string(test_string_9, "\n", &test_array_9_out);
+    res_9 = split_string(test_string_9, "\r\n", &test_array_9_out);
     printf("\n\n RES9: %d", res_9);
     printf("\n checking whether number of parts in test 9 == %d and trimming works...", test_9_n_parts);
     assert(res_9 == test_9_n_parts);
     printf(" - OK!\n\n");
 
     for(i = 0; i < res_9; i++) {
-        printf("\nPART I: %d OF %d: %s\n\n", i + 1, res_9, test_array_9_out[i]);
+        printf("\nPART I: %d OF %d: '%s' \n\n", i + 1, res_9, test_array_9_out[i]);
     }
 
     res_10 = split_string(test_string_10, "\n", &test_array_10_out);

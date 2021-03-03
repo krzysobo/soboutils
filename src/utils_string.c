@@ -192,7 +192,7 @@ int split_string(char *string_in, char *sep_in, char ***strings_out)
             going = false;
         } else {
             len_part = p - old_p;
-            p++;
+            p+=sep_size;
         }
         
         all_parts[part_i] = calloc(len_part + 1, 1);
