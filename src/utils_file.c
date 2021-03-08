@@ -104,3 +104,34 @@ int check_file_contains(char *file_path, char *phrase)
 
     return res;
 }
+
+
+/**
+ * @brief  copies a file byte-to-byte (b2b) without having to 
+ *         take care of file size, initialize mem  etc
+ * @note   
+ * @param  *path_dst: 
+ * @param  *path_src: 
+ * @retval 
+ */
+int copy_file_b2b(const char *path_dst, const char *path_src)
+{
+    FILE *fp_src = NULL, *fp_dst = NULL;
+    char ch;
+
+    fp_src = fopen(path_src, "rb");
+    if (fp_src == NULL)
+        return -1;
+
+    fp_dst = fopen(path_dst, "wb");
+    if (fp_dst == NULL)
+        return -1;
+
+    while ((ch = fgetc(fp_src)) != EOF)
+        fputc(ch, fp_dst);
+    
+    fclose(fp_src);
+    fclose(fp_dst);
+
+    return 0;
+}

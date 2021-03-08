@@ -25,5 +25,6 @@
 int file_exists(char *file_path);
 int get_file_size(char *file_path);
 int check_file_contains(char *file_path, char *phrase);
+int copy_file_b2b(const char *path_dst, const char *path_src);
 
 #endif

@@ -14,8 +14,9 @@ AS                     := /usr/bin/as
 # can be set in the env. vars, ie. export TARGET_PATH='xxxxx'
 TARGET_PATH            ?= bin
 
-SOBOUTILS_INCLUDE_PATH ?= /usr/local/share/soboutils
-SOBOUTILS_LIB_PATH     ?= /usr/local/lib/soboutils
+SOBOUTILS_INSTALL_INCLUDE_PATH ?= /usr/local/share/soboutils
+SOBO_COMMON_INCLUDE_PATH	   ?= /usr/local/share   # upper directory - always for using in other projects
+SOBOUTILS_LIB_PATH     		   ?= /usr/local/lib/soboutils
 .PHONY: clean
 
 all: libsoboutils_static
@@ -51,8 +52,17 @@ utils_gtk: src/utils_gtk.c
 	$(TARGET_PATH)/utils_gtk.o \
 	-c src/utils_gtk.c \
 	-I include
+
+	$(CC) $(CFLAGSGTK) `pkg-config --cflags gtk4` -fpic -o \
+	$(TARGET_PATH)/gtk_validator_helpers.o \
+	-c src/gtk_validator_helpers.c \
+	-I include
 	
-	chmod 777 $(TARGET_PATH)/utils_gtk.o
+	ar rcs $(TARGET_PATH)/libsoboutils_gtk.a \
+	$(TARGET_PATH)/utils_gtk.o \
+	$(TARGET_PATH)/gtk_validator_helpers.o
+	
+	chmod 777 $(TARGET_PATH)/libsoboutils_gtk.a
 
 
 libsoboutils_static: utils_time utils_file utils_string
@@ -88,13 +98,13 @@ test_utils_time: src/test/test_utils_time.c
 install:
 	@echo "\nThis operation requires the SUDO access.\n"
 	sudo mkdir -p $(SOBOUTILS_LIB_PATH)
-	sudo mkdir -p $(SOBOUTILS_INCLUDE_PATH)
+	sudo mkdir -p $(SOBOUTILS_INSTALL_INCLUDE_PATH)
 	sudo cp -rf $(TARGET_PATH)/libsoboutils.a $(SOBOUTILS_LIB_PATH)/
-	sudo cp -rf include/soboutils/* $(SOBOUTILS_INCLUDE_PATH)/
+	sudo cp -rf include/soboutils/* $(SOBOUTILS_INSTALL_INCLUDE_PATH)/
 
 
 installgtk: utils_gtk install
-	sudo cp -rf $(TARGET_PATH)/utils_gtk.o $(SOBOUTILS_LIB_PATH)/
+	sudo cp -rf $(TARGET_PATH)/libsoboutils_gtk.a $(SOBOUTILS_LIB_PATH)/
 
 
 clean:

@@ -335,3 +335,31 @@ void init_tags(GtkWindow *window)
     tag_bold = gtk_text_buffer_create_tag(buffer, "bold", 
         "weight", PANGO_WEIGHT_BOLD, NULL);    
 }
+
+
+/**
+ * @brief toggle N boxes by visibility as in the case of a "radio button":
+ *        a selected box gets visible, while other boxes from the list 
+ *        do disappear.
+ * @note   
+ * @param  *box_name: name of the currently selected box
+ * @param  **boxes:  an array of switchable box names
+ * @param  n_box_names:  number of items in the above array
+ * @param  *window: GtkWindow object
+ * @retval None
+ */
+void switch_visible_boxes(char *box_name, char **boxes, int n_box_names, 
+    GtkWindow *window)
+{
+    int i = 0;
+    GtkWidget *widget = NULL; 
+
+    for (i = 0; i < n_box_names; i++) {
+        widget = get_widget_by_name(boxes[i], window);
+        if (strcmp(boxes[i], box_name) == 0) {
+            gtk_widget_set_visible(widget, true);
+        } else {
+            gtk_widget_set_visible(widget, false);
+        }
+    }
+}

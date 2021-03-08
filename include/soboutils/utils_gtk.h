@@ -36,3 +36,6 @@ void connect_widget_by_name(gchar *name, gchar *signal,
     GCallback cb, GtkWindow *window);
 
 void init_tags(GtkWindow *window);
+
+void switch_visible_boxes(char *box_name, char **boxes, int n_box_names, 
+    GtkWindow *window);
