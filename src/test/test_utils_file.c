@@ -1,4 +1,4 @@
-/*  
+/*
 *  Copyright (c) 2020-2021 Krzysztof Sobolewski <krzysztof.sobolewski@gmail.com>
 *  Permission is hereby granted, free of charge, to any person obtaining a copy
 *  of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@
 #include "soboutils/utils_file.h"
 
 
-int main (int argc, char **argv)
+int main(int argc, char** argv)
 {
-    FILE *fp;
-    char * test_file_path = "./testfile.txt";
-    char * test_string = "Hello Test"; 
+    FILE* fp;
+    char* test_file_path = "./testfile.txt";
+    char* test_string = "Hello Test";
 
     printf("\ntest_utils_file started...\n");
 
-    if(!file_exists(test_file_path)) {
+    if (!file_exists(test_file_path)) {
         printf("\nThe test file %s already existed - trying to remove...",
             test_file_path);
         remove(test_file_path);
@@ -58,13 +58,13 @@ int main (int argc, char **argv)
     printf(" - OK!\n");
 
 
-    printf("\nChecking whether the test file %s is %lu bytes long...", 
+    printf("\nChecking whether the test file %s is %lu bytes long...",
         test_file_path, (unsigned long)strlen(test_string));
     assert(get_file_size(test_file_path) == strlen(test_string));
     printf(" - OK!\n");
 
 
-    printf("\nChecking whether the test file %s contains the word 'Hello'...", 
+    printf("\nChecking whether the test file %s contains the word 'Hello'...",
         test_file_path);
     assert(check_file_contains(test_file_path, "Hello"));
     printf(" - OK!\n");
@@ -76,7 +76,7 @@ int main (int argc, char **argv)
     printf(" - OK!\n");
 
 
-    printf("\ntest_utils_file finished...\n");   
+    printf("\ntest_utils_file finished...\n");
 
     return 0;
 }

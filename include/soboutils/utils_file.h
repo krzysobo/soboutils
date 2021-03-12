@@ -1,4 +1,4 @@
-/*  
+/*
 *  Copyright (c) 2020-2021 Krzysztof Sobolewski <krzysztof.sobolewski@gmail.com>
 *  Permission is hereby granted, free of charge, to any person obtaining a copy
 *  of this software and associated documentation files (the "Software"), to deal
@@ -19,8 +19,9 @@
 *  SOFTWARE.
 */
 
+
 #ifndef UTL_FIL_H
-#define UTL_FIL_H
+#define UTL_FIL_H 1
 
 int file_exists(char *file_path);
 int get_file_size(char *file_path);

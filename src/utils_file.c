@@ -19,14 +19,12 @@
 *  SOFTWARE.
 */
 
-
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include "soboutils/utils_file.h"
-
 
 /**
  * @brief  checks if the file exists
@@ -43,7 +41,6 @@ int file_exists(char *file_path)
     return res;
 }
 
-
 /**
  * @brief  gets the file size if it exists
  * @note   
@@ -55,7 +52,8 @@ int get_file_size(char *file_path)
     FILE *fp;
     int fsize;
 
-    if (!file_exists(file_path)) {
+    if (!file_exists(file_path))
+    {
         return 0;
     }
 
@@ -67,7 +65,6 @@ int get_file_size(char *file_path)
 
     return fsize;
 }
-
 
 /**
  * @brief  checks whether the file contains a phrase
@@ -86,13 +83,15 @@ int check_file_contains(char *file_path, char *phrase)
 
     fp = fopen(file_path, "rb");
     fsize = get_file_size(file_path);
-    if (!fsize) {
+    if (!fsize)
+    {
         return 0;
     }
     buff = calloc(fsize + 1, 1);
-    
+
     read_size = fread(buff, 1, fsize, fp);
-    if(!read_size) {
+    if (!read_size)
+    {
         return 0;
     }
 
@@ -104,7 +103,6 @@ int check_file_contains(char *file_path, char *phrase)
 
     return res;
 }
-
 
 /**
  * @brief  copies a file byte-to-byte (b2b) without having to 
@@ -129,7 +127,7 @@ int copy_file_b2b(const char *path_dst, const char *path_src)
 
     while ((ch = fgetc(fp_src)) != EOF)
         fputc(ch, fp_dst);
-    
+
     fclose(fp_src);
     fclose(fp_dst);
 

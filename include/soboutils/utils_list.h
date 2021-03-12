@@ -20,30 +20,30 @@
 */
 
 
-#ifndef UTL_STR_H
-#define UTL_STR_H 1
+#ifndef UTL_LST_H
+#define UTL_LST_H 1
 
-#include <stdbool.h>
+#include <stdint.h>
 #include <ctype.h>
 
-int is_trimmable(char x, char *extra_chars);
-char *ltrim(char *text, char *extra_chars);
-char *rtrim(char *text, char *extra_chars);
-char *trim(char *text, char *extra_chars);
+void init_list(int max_items, void **list, size_t item_size);
 
-int number_of_substrings(char *haystack, char *needle);
+int find_first_free_item_index(void *list, int max_items,
+    int (is_free_fun)(void *, int));
 
-int strpos(char *haystack, char *needle);
+int extend_list(void **list, int *current_max_num_items,
+    int extra_max_num_items, size_t item_size);
 
-int split_string(char *string_in, char *sep_in, char ***strings_out);
+int find_or_create_free_item_index(
+    void **list,
+    int *current_max_num_items,
+    int extra_max_num_items,
+    size_t item_size,
+    int (is_free_fun)(void *, int));
 
-
-unsigned long join_strings(char *items[], int nitems, bool is_quoted,
-    const char *sep_in, char **str_out);
-
-int add_to_string(char **str, size_t *str_size, char *part);
-
-int substr(char *text, size_t offset, size_t limit, char *part,
-    size_t part_size);
+void update_num_items(void *list,
+    int *ptr_max_num_items,
+    int *ptr_num_items,
+    int (is_free_fun)(void *, int));
 
 #endif

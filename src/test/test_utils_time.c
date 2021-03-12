@@ -1,4 +1,4 @@
-/*  
+/*
 *  Copyright (c) 2020-2021 Krzysztof Sobolewski <krzysztof.sobolewski@gmail.com>
 *  Permission is hereby granted, free of charge, to any person obtaining a copy
 *  of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,12 @@
 #include "soboutils/utils_time.h"
 
 
-int main (int argc, char **argv)
+int main(int argc, char** argv)
 {
     char time_buff[30];
     char time_buff_test[30];
-    const char *format = "%Y-%m-%d %H:%M:%S";
-    struct tm *tm;
+    const char* format = "%Y-%m-%d %H:%M:%S";
+    struct tm* tm;
     time_t now;
 
     printf("\ntest_utils_time has started...\n");
@@ -44,7 +44,7 @@ int main (int argc, char **argv)
 
     time(&now);
     tm = localtime(&now);
-    
+
     printf("\nParsing the generated time string with strptime...\n");
     strptime(time_buff, format, tm);
 
@@ -52,13 +52,13 @@ int main (int argc, char **argv)
     strftime(time_buff_test, 30, format, tm);
 
     printf("\nChecking whether both time strings:\n%s\nand\n%s\n"
-          "are identical - if yes, it means that the created time "
-          "string is valid and complies with the format...",
-          time_buff, time_buff_test);
+        "are identical - if yes, it means that the created time "
+        "string is valid and complies with the format...",
+        time_buff, time_buff_test);
     assert(strcmp(time_buff, time_buff_test) == 0);
     printf(" - OK!\n\n");
 
     printf("\ntest_utils_time has finished...\n");
-    
+
     return 0;
 }

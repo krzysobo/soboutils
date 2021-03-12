@@ -1,4 +1,4 @@
-/*  
+/*
 *  Copyright (c) 2020-2021 Krzysztof Sobolewski <krzysztof.sobolewski@gmail.com>
 *  Permission is hereby granted, free of charge, to any person obtaining a copy
 *  of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,12 @@
 #include "soboutils/utils_time.h"
 
 
-void get_formatted_local_time(char *buf_out, int len_buf_out, 
+void get_formatted_local_time(char *buf_out, int len_buf_out,
     const char *time_format)
 {
     time_t now;
     struct tm *local_now;
-    
+
     time(&now);
     local_now = localtime(&now);
 

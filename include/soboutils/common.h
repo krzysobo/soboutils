@@ -20,30 +20,23 @@
 */
 
 
-#ifndef UTL_STR_H
-#define UTL_STR_H 1
+#ifndef UTL_COMMON_H
+#define UTL_COMMON_H 1
 
-#include <stdbool.h>
-#include <ctype.h>
-
-int is_trimmable(char x, char *extra_chars);
-char *ltrim(char *text, char *extra_chars);
-char *rtrim(char *text, char *extra_chars);
-char *trim(char *text, char *extra_chars);
-
-int number_of_substrings(char *haystack, char *needle);
-
-int strpos(char *haystack, char *needle);
-
-int split_string(char *string_in, char *sep_in, char ***strings_out);
+#include <time.h>
 
 
-unsigned long join_strings(char *items[], int nitems, bool is_quoted,
-    const char *sep_in, char **str_out);
+// string/char array functions
+int char_array_slice(char *dst, char *src, int s_len, int s_from);
+int get_char_array_slice_number(char *src, int page_size);
 
-int add_to_string(char **str, size_t *str_size, char *part);
+// "exceptions" -> TODO -> move them to exceptions.c/exceptions.h
+void raise_char_array_slice(int res_code);
+void raise_extend_item_list(int res_code);
+void raise_fi_negative(int res_code, const char *func_name);
 
-int substr(char *text, size_t offset, size_t limit, char *part,
-    size_t part_size);
+
+int check_fi_non_negative(int fi);
+int check_user_list_extended_fi(int fi);
 
 #endif
