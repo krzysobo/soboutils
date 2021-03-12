@@ -1,6 +1,10 @@
 #include <gtk/gtk.h>
 #include "soboutils/utils_gtk.h"
 
+
+GtkTextTag *tag_bold;
+
+
 /**
  * @brief
  * @note
@@ -319,6 +323,18 @@ void init_tags(GtkWindow *window)
     tag_bold = gtk_text_buffer_create_tag(buffer, "bold",
         "weight", PANGO_WEIGHT_BOLD, NULL);
 }
+
+
+/**
+ * @brief  
+ * @note   
+ * @retval 
+ */
+GtkTextTag *get_tag_bold()
+{
+    return tag_bold;
+}
+
 
 /**
  * @brief toggle N boxes by visibility as in the case of a "radio button":

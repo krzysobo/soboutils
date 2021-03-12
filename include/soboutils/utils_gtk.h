@@ -62,6 +62,8 @@ void connect_widget_by_name(gchar *name, gchar *signal,
 
 void init_tags(GtkWindow *window);
 
+GtkTextTag *get_tag_bold();
+
 void switch_visible_boxes(char *box_name, char **boxes, int n_box_names,
     GtkWindow *window);
 
@@ -70,5 +72,6 @@ int connect_object_with_parent(const char *child_id, const char *parent_id,
 
 int connect_objects_with_parents(const char **child_parent_pairs[],
     int nitems, GtkBuilder *builder);
+
 
 #endif
