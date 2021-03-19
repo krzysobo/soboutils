@@ -229,6 +229,8 @@ unsigned long join_strings(char *items[], int nitems, bool is_quoted,
     unsigned long total_strlen_strs = 0;
     int sep_size = 0;
     char *sep;
+    char *quote = "\"";
+
     char *quoted_strs_dump;
 
     if ((items == NULL) || (nitems < 1)) {
@@ -239,7 +241,8 @@ unsigned long join_strings(char *items[], int nitems, bool is_quoted,
         sep = sep_in;
     } else {
         sep = calloc(1 + 1, 1);
-        strncpy(sep, ",", 1);
+        sep[0] = ',';
+        sep[1] = 0;
     }
 
     /*     printf("\n SEP IN IS: '%s'...SEP OUT IS: '%s'... \n\n",
@@ -262,9 +265,9 @@ unsigned long join_strings(char *items[], int nitems, bool is_quoted,
 
     for (i = 0; i < nitems; i++) {
         if (is_quoted) {
-            strncat(quoted_strs_dump, "\"", 1);
+            strncat(quoted_strs_dump, quote, strlen(quote));
             strncat(quoted_strs_dump, items[i], strlen(items[i]));
-            strncat(quoted_strs_dump, "\"", 1);
+            strncat(quoted_strs_dump, quote, strlen(quote));
         } else {
             strncat(quoted_strs_dump, items[i], strlen(items[i]));
         }
