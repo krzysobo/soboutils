@@ -365,7 +365,7 @@ int char_array_slice(char *dst, char *src, int s_len, int s_from)
     int len_src = 0;
 
     len_src = strlen(src);
-    bzero(dst, sizeof(char) * (s_len + 1));
+    memset(dst, 0, (s_len + 1));
     if (s_from >= len_src)          /* wrong data */
         return RES_WRONG_PARAMS;
 
