@@ -172,7 +172,8 @@ int split_string(char *string_in, char *sep_in, char ***strings_out)
         sep = sep_in;
     } else {
         sep = calloc(1 + 1, 1);
-        strncpy(sep, ",", 1);
+        sep[0] = ',';
+        sep[1] = 0;
     }
 
     sep_size = strlen(sep);
