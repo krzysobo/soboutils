@@ -37,7 +37,7 @@ bool check_str_is_unsigned_int_numeric(char *text)
     len_text = strlen(text);
     for (i = 0; i < len_text; i++)
     {
-        if (!isnumber(text[i]))
+        if (!isdigit(text[i]))
             return false;
     }
 
