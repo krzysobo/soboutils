@@ -46,7 +46,7 @@ int add_to_string(char **str, size_t *str_size, char *part);
 int substr(char *text, size_t offset, size_t limit, char *part,
     size_t part_size);
 
-// string/char array functions
+/* string/char array functions */
 int char_array_slice(char *dst, char *src, int s_len, int s_from);
 int get_char_array_slice_number(char *src, int page_size);
 
