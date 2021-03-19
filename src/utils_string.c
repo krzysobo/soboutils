@@ -25,6 +25,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>  /* for isspace */
+#include "soboutils/common.h"
 
 
 /**
@@ -169,8 +170,7 @@ int split_string(char *string_in, char *sep_in, char ***strings_out)
 
     if ((sep_in != NULL) && (strlen(sep_in) >= 1)) {
         sep = sep_in;
-    }
-    else {
+    } else {
         sep = calloc(1 + 1, 1);
         strncpy(sep, ",", 1);
     }
@@ -190,8 +190,7 @@ int split_string(char *string_in, char *sep_in, char ***strings_out)
             p = string_in + len_string_in;
             len_part = p - old_p;
             going = false;
-        }
-        else {
+        } else {
             len_part = p - old_p;
             p += sep_size;
         }
@@ -237,8 +236,7 @@ unsigned long join_strings(char *items[], int nitems, bool is_quoted,
 
     if ((sep_in != NULL) && (strlen(sep_in) >= 1)) {
         sep = sep_in;
-    }
-    else {
+    } else {
         sep = calloc(1 + 1, 1);
         strncpy(sep, ",", 1);
     }
@@ -266,8 +264,7 @@ unsigned long join_strings(char *items[], int nitems, bool is_quoted,
             strncat(quoted_strs_dump, "\"", 1);
             strncat(quoted_strs_dump, items[i], strlen(items[i]));
             strncat(quoted_strs_dump, "\"", 1);
-        }
-        else {
+        } else {
             strncat(quoted_strs_dump, items[i], strlen(items[i]));
         }
 
@@ -351,4 +348,55 @@ int substr(char *text, size_t offset, size_t limit, char *part,
     part[part_size] = 0;
 
     return 0;
+}
+
+
+/**
+ * @brief
+ * @note
+ * @param  *dst:
+ * @param  *src:
+ * @param  s_len:
+ * @param  s_from:
+ * @retval
+ */
+int char_array_slice(char *dst, char *src, int s_len, int s_from)
+{
+    int len_src = 0;
+
+    len_src = strlen(src);
+    bzero(dst, sizeof(char) * (s_len + 1));
+    if (s_from >= len_src)          /* wrong data */
+        return RES_WRONG_PARAMS;
+
+    /* if from + length to cut is bigger than string length, cut it
+       to the max. length */
+    if (s_from + s_len > len_src) {
+        s_len = len_src - s_from;
+    }
+    memcpy(dst, src + s_from, s_len);
+
+    return RES_OK;
+}
+
+
+/**
+ * @brief
+ * @note
+ * @param  *src:
+ * @param  page_size:
+ * @retval
+ */
+int get_char_array_slice_number(char *src, int page_size)
+{
+    /* printf("get_char_array_slice_number str: %s page_size %d", src, page_size); */
+    int len_src = strlen(src);
+    int part_no = len_src / page_size;
+    int part_remn = len_src % page_size;
+    /* printf("\nlen_src: %d part_no: %d part_remn: %d", len_src, part_no, part_remn); */
+    if (part_remn) {
+        part_no++;
+    }
+    /* printf("\n final part_no %d", part_no); */
+    return part_no;
 }

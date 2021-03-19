@@ -13,64 +13,47 @@ ASFLAGS                :=
 AS                     := /usr/$(TARGET_DIR)/as
 # can be set in the env. vars, ie. export TARGET_DIR='xxxxx'
 TARGET_DIR            ?= bin
+SOURCE_DIR			  ?= src
 
 SOBOUTILS_INSTALL_INCLUDE_PATH ?= /usr/local/share/soboutils
 SOBO_COMMON_INCLUDE_PATH	   ?= /usr/local/share   # upper directory - always for using in other projects
 SOBOUTILS_LIB_PATH     		   ?= /usr/local/lib/soboutils
 .PHONY: clean
 
+
+SRCS := $(wildcard src/*.c)
+OBJS := $(patsubst src/%.c,$(TARGET_DIR)/%.c.o,$(SRCS))
+OBJS_FOR_LIB_STATIC := $(TARGET_DIR)/common.c.o $(TARGET_DIR)/utils_list.c.o \
+	$(TARGET_DIR)/utils_time.c.o $(TARGET_DIR)/utils_file.c.o $(TARGET_DIR)/utils_string.c.o
+OBJS_FOR_GTK_STATIC := $(TARGET_DIR)/common.c.o $(TARGET_DIR)/utils_list.c.o \
+	$(TARGET_DIR)/utils_time.c.o $(TARGET_DIR)/utils_file.c.o $(TARGET_DIR)/utils_string.c.o
+
 all: libsoboutils_static
+	@echo "SRCS: $(SRCS)\n\nOBJS: $(OBJS)\n\n"
 alltest: libsoboutils_static test_utils_file test_utils_string test_utils_time
 
 
-utils_time: src/utils_time.c
-	$(CC) $(CFLAGS) -fpic -o $(TARGET_DIR)/utils_time.o \
-	-c src/utils_time.c \
-	-I include
-	
-	chmod 777 $(TARGET_DIR)/utils_time.o
+$(OBJS): $(TARGET_DIR)/%.c.o : $(SOURCE_DIR)/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -fpic -o $@ \
+	-c $< \
+	-I include \
+	-I $(SOBO_COMMON_INCLUDE_PATH)
+	chmod 777 $@
 
 
-utils_file: src/utils_file.c
-	$(CC) $(CFLAGS) -fpic -o $(TARGET_DIR)/utils_file.o \
-	-c src/utils_file.c \
-	-I include
-
-	chmod 777 $(TARGET_DIR)/utils_file.o
-
-utils_list: src/utils_list.c
-	$(CC) $(CFLAGS) -fpic -o $(TARGET_DIR)/utils_list.o \
-	-c src/utils_list.c \
-	-I include
-
-	chmod 777 $(TARGET_DIR)/utils_list.o
-
-common: src/common.c
-	$(CC) $(CFLAGS) -fpic -o $(TARGET_DIR)/common.o \
-	-c src/common.c \
-	-I include
-
-	chmod 777 $(TARGET_DIR)/common.o
-
-
-utils_string: src/utils_string.c
-	$(CC) $(CFLAGS) -fpic -o $(TARGET_DIR)/utils_string.o \
-	-c src/utils_string.c \
-	-I include
-	
-	chmod 777 $(TARGET_DIR)/utils_string.o
-
-
-utils_gtk: src/utils_gtk.c
+libsoboutils_gtk: src/utils_gtk.c
 	$(CC) $(CFLAGSGTK) `pkg-config --cflags gtk4` -fpic -o \
 	$(TARGET_DIR)/utils_gtk.o \
 	-c src/utils_gtk.c \
-	-I include
+	-I include \
+	-I $(SOBO_COMMON_INCLUDE_PATH)
 
 	$(CC) $(CFLAGSGTK) `pkg-config --cflags gtk4` -fpic -o \
 	$(TARGET_DIR)/gtk_validator_helpers.o \
 	-c src/gtk_validator_helpers.c \
-	-I include
+	-I include \
+	-I $(SOBO_COMMON_INCLUDE_PATH)
 	
 	ar rcs $(TARGET_DIR)/libsoboutils_gtk.a \
 	$(TARGET_DIR)/utils_gtk.o \
@@ -79,11 +62,10 @@ utils_gtk: src/utils_gtk.c
 	chmod 777 $(TARGET_DIR)/libsoboutils_gtk.a
 
 
-OBJS_FOR_LIB = $(wildcard $(TARGET_DIR)/*.o)
-libsoboutils_static: utils_time utils_file utils_string
+libsoboutils_static: $(OBJS_FOR_LIB_STATIC)
 	ar rcs $(TARGET_DIR)/libsoboutils.a \
-		$(OBJS_FOR_LIB)
-	rm -f $(OBJS_FOR_LIB)
+		$(OBJS_FOR_LIB_STATIC)
+	rm -f $(OBJS_FOR_LIB_STATIC)
 
 
 test_utils_file: src/test/test_utils_file.c
@@ -113,7 +95,7 @@ install:
 	sudo cp -rf include/soboutils/* $(SOBOUTILS_INSTALL_INCLUDE_PATH)/
 
 
-installgtk: utils_gtk install
+installgtk: libsoboutils_gtk install
 	sudo cp -rf $(TARGET_DIR)/libsoboutils_gtk.a $(SOBOUTILS_LIB_PATH)/
 
 

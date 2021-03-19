@@ -25,7 +25,12 @@
 
 #include <gtk/gtk.h>
 
-GtkTextTag *tag_bold;
+
+typedef struct WidgetToParent {
+    char *widget_name;
+    char *parent_name;
+} WidgetToParent;
+
 
 int get_gtk_entry_text(GtkEntry *entry, char **text_out);
 int get_gtk_entry_text_by_name(gchar *name, GtkWindow *window,
@@ -60,7 +65,7 @@ GtkWidget *get_widget_by_name(gchar *name, GtkWindow *window);
 void connect_widget_by_name(gchar *name, gchar *signal,
     GCallback cb, GtkWindow *window);
 
-void init_tags(GtkWindow *window);
+void init_tags(GtkWindow *window, char *tv_output_id);
 
 GtkTextTag *get_tag_bold();
 
@@ -70,7 +75,7 @@ void switch_visible_boxes(char *box_name, char **boxes, int n_box_names,
 int connect_object_with_parent(const char *child_id, const char *parent_id,
     GtkBuilder *builder);
 
-int connect_objects_with_parents(const char **child_parent_pairs[],
+int connect_objects_with_parents(WidgetToParent *child_parent_pairs,
     int nitems, GtkBuilder *builder);
 
 

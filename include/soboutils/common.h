@@ -26,15 +26,17 @@
 #include <time.h>
 
 
-// string/char array functions
-int char_array_slice(char *dst, char *src, int s_len, int s_from);
-int get_char_array_slice_number(char *src, int page_size);
+enum {
+    RES_OK = 0,
+    RES_FAILED = -1,
+    RES_WRONG_PARAMS = -2
+};
 
-// "exceptions" -> TODO -> move them to exceptions.c/exceptions.h
+
+/* "exceptions" -> TODO -> move them to exceptions.c/exceptions.h */
 void raise_char_array_slice(int res_code);
 void raise_extend_item_list(int res_code);
 void raise_fi_negative(int res_code, const char *func_name);
-
 
 int check_fi_non_negative(int fi);
 int check_user_list_extended_fi(int fi);

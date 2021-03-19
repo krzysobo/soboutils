@@ -2,7 +2,7 @@
 #include "soboutils/utils_gtk.h"
 
 
-GtkTextTag *tag_bold;
+static GtkTextTag *tag_bold;
 
 
 /**
@@ -312,14 +312,17 @@ void connect_widget_by_name(gchar *name, gchar *signal,
  * @param  *window:
  * @retval None
  */
-void init_tags(GtkWindow *window)
+void init_tags(GtkWindow *window, char *tv_output_id)
 {
     GtkTextBuffer *buffer;
     GtkWidget *tv_output;
-    tv_output = GTK_WIDGET(g_object_get_data(G_OBJECT(window),
-        "tv_output"));
+    tv_output = get_widget_by_name(tv_output_id, window);
+    if (tv_output == NULL)
+        return;
+ 
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tv_output));
-
+    if (buffer == NULL)
+        return;
     tag_bold = gtk_text_buffer_create_tag(buffer, "bold",
         "weight", PANGO_WEIGHT_BOLD, NULL);
 }
@@ -396,15 +399,16 @@ int connect_object_with_parent(const char *child_id, const char *parent_id,
  * @param  *builder:
  * @retval
  */
-int connect_objects_with_parents(const char **child_parent_pairs[],
+int connect_objects_with_parents(WidgetToParent *child_parent_pairs,
     int nitems, GtkBuilder *builder)
 {
     int i = 0;
     int res = 0;
 
     for (i = 0; i < nitems; i++) {
-        res = connect_object_with_parent(child_parent_pairs[i][0],
-            child_parent_pairs[i][1], builder);
+        printf("\n widget name: %s PARENT NAME: %s\n\n", child_parent_pairs[i].widget_name, child_parent_pairs[i].parent_name);
+        res = connect_object_with_parent(child_parent_pairs[i].widget_name,
+            child_parent_pairs[i].parent_name, builder);
         if (res != 0)
             return -1;
     }
